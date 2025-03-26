@@ -12,4 +12,4 @@ logging:
   file:
     name: ./logs/rtsp-websocket-server-sample/rtsp-websocket-server-sample.log
   level:
-    com.github.xingshuangs: debug
+    com.github.xingshuangs: info

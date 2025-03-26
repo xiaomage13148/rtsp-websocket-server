@@ -1,37 +1,34 @@
-/*
- * MIT License
- *
- * Copyright (c) 2021-2099 Oscura (xingshuang) <xingshuang_cool@163.com>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.github.xingshuangs.rtsp.server;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+@Slf4j
 @SpringBootApplication
 public class RtspWebsocketServerSampleApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(RtspWebsocketServerSampleApplication.class, args);
+    public static void main(String[] args) throws UnknownHostException {
+        ConfigurableApplicationContext application = SpringApplication.run(RtspWebsocketServerSampleApplication.class, args);
+        Environment env = application.getEnvironment();
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        String port = env.getProperty("server.port");
+        String path = env.getProperty("server.servlet.context-path");
+        if (StringUtils.isEmpty(path)) {
+            path = "";
+        }
+        log.info("\n----------------------------------------------------------\n\t" +
+                "Application  is running! Access URLs:\n\t" +
+                "Local访问网址: \t\thttp://localhost:" + port + path + "\n\t" +
+                "External访问网址: \thttp://" + ip + ":" + port + path + "\n\t" +
+                "doc访问地址: \t\thttp://localhost:" + port + "/doc.html\n" +
+                "----------------------------------------------------------");
     }
 
 }
